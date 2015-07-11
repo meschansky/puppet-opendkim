@@ -1,15 +1,13 @@
 define opendkim::trusted (
-    $host         = $name,
-    $pathConf     = '/etc/opendkim',
-    $TrustedHosts = 'TrustedHosts',
-    $packageName  = 'opendkim',
-    $serviceName  = 'opendkim',
+    $host          = $name,
+    $trusted_hosts = 'TrustedHosts',
+    
 ) {
     # Add line into KeyTable
-    file_line { "${pathConf}/${TrustedHosts}_${host}":
-        path    => "${pathConf}/${TrustedHosts}",
+    file_line { "${opendkim::pathconf}/${trusted_hosts}_${host}":
+        path    => "${opendkim::pathconf}/${trusted_hosts}",
         line    => $host,
-        notify  => Service[$serviceName],
-        require => Package[$packageName],
+        notify  => Service[$opendkim::service_name],
+        require => Package[$opendkim::package_name],
     }
 }
