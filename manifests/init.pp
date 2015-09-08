@@ -57,6 +57,34 @@ class opendkim (
               mode   => '0755',
               before => Package[$package_name],
             }
+            file { "${pathconf}/keys":
+              ensure => directory,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0755',
+              before => Package[$package_name],
+            }
+            file { "${pathconf}/KeyTable":
+              ensure => present,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0755',
+              before => Package[$package_name],
+            }
+            file { "${pathconf}/SigningTable":
+              ensure => present,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0755',
+              before => Package[$package_name],
+            }
+            file { "${pathconf}/TrustedHosts":
+              ensure => present,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0755',
+              before => Package[$package_name],
+            }
       }
       default: {}
     }
