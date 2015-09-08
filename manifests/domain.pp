@@ -21,7 +21,7 @@ define opendkim::domain (
     }
 
     # Generate dkim-keys
-    exec { "/usr/sbin/opendkim-genkey -D ${pathkeys}/${domain}/ -d ${domain} -s ${selector}":
+    exec { "opendkim-genkey -D ${pathkeys}/${domain}/ -d ${domain} -s ${selector}":
         unless  => "/usr/bin/test -f ${pathkeys}/${domain}/${selector}.private && /usr/bin/test -f ${pathkeys}/${domain}/${selector}.txt",
         user    => $opendkim::owner,
         notify  => Service[$opendkim::service_name],
