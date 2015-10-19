@@ -48,8 +48,8 @@ class opendkim (
     }
 
     case $::operatingsystem {
-      'Debian': {
-            # Debian doesn't ship this directory in its package
+      /^(Debian|Ubuntu)$/: {
+            # Debian/Ubuntu doesn't ship this directory in its package
             file { $pathconf:
               ensure => directory,
               owner  => 'root',
