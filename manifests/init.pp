@@ -52,35 +52,35 @@ class opendkim (
               owner  => 'root',
               group  => 'opendkim',
               mode   => '0755',
-              before => Package[$package_name],
+              require => Package[$package_name],
             }
             file { "${pathconf}/keys":
               ensure => directory,
               owner  => 'opendkim',
               group  => 'opendkim',
               mode   => '0750',
-              before => Package[$package_name],
+              require => Package[$package_name],
             }
             file { "${pathconf}/KeyTable":
               ensure => present,
               owner  => 'opendkim',
               group  => 'opendkim',
               mode   => '0640',
-              before => Package[$package_name],
+              require => Package[$package_name],
             }
             file { "${pathconf}/SigningTable":
               ensure => present,
               owner  => 'opendkim',
               group  => 'opendkim',
               mode   => '0640',
-              before => Package[$package_name],
+              require => Package[$package_name],
             }
             file { "${pathconf}/TrustedHosts":
               ensure => present,
               owner  => 'opendkim',
               group  => 'opendkim',
               mode   => '0644',
-              before => Package[$package_name],
+              require => Package[$package_name],
             }
       }
       default: {}
