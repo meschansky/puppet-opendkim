@@ -43,6 +43,9 @@ class opendkim (
 
     case $::operatingsystem {
       /^(Debian|Ubuntu)$/: {
+            package { 'opendkim-tools':
+              ensure => present,
+            }
             # Debian/Ubuntu doesn't ship this directory in its package
             file { $pathconf:
               ensure => directory,
