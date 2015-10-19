@@ -48,38 +48,38 @@ class opendkim (
             }
             # Debian/Ubuntu doesn't ship this directory in its package
             file { $pathconf:
-              ensure => directory,
-              owner  => 'root',
-              group  => 'opendkim',
-              mode   => '0755',
+              ensure  => directory,
+              owner   => 'root',
+              group   => 'opendkim',
+              mode    => '0755',
               require => Package[$package_name],
             }
             file { "${pathconf}/keys":
-              ensure => directory,
-              owner  => 'opendkim',
-              group  => 'opendkim',
-              mode   => '0750',
+              ensure  => directory,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0750',
               require => Package[$package_name],
             }
             file { "${pathconf}/KeyTable":
-              ensure => present,
-              owner  => 'opendkim',
-              group  => 'opendkim',
-              mode   => '0640',
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0640',
               require => Package[$package_name],
             }
             file { "${pathconf}/SigningTable":
-              ensure => present,
-              owner  => 'opendkim',
-              group  => 'opendkim',
-              mode   => '0640',
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0640',
               require => Package[$package_name],
             }
             file { "${pathconf}/TrustedHosts":
-              ensure => present,
-              owner  => 'opendkim',
-              group  => 'opendkim',
-              mode   => '0644',
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0644',
               require => Package[$package_name],
             }
       }
