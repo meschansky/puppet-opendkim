@@ -41,12 +41,6 @@ class opendkim (
         ensure => present,
     }
 
-    service { $service_name:
-        ensure  => running,
-        enable  => true,
-        require => Package[$package_name],
-    }
-
     case $::operatingsystem {
       /^(Debian|Ubuntu)$/: {
             # Debian/Ubuntu doesn't ship this directory in its package
@@ -96,6 +90,12 @@ class opendkim (
         mode    => '0644',
         content => template('opendkim/opendkim.conf'),
         notify  => Service[$service_name],
+        require => Package[$package_name],
+    }
+
+    service { $service_name:
+        ensure  => running,
+        enable  => true,
         require => Package[$package_name],
     }
 }
