@@ -41,49 +41,46 @@ class opendkim (
         ensure => present,
     }
 
-    service { $service_name:
-        ensure  => running,
-        enable  => true,
-        require => Package[$package_name],
-    }
-
     case $::operatingsystem {
-      'Debian': {
-            # Debian doesn't ship this directory in its package
+      /^(Debian|Ubuntu)$/: {
+            package { 'opendkim-tools':
+              ensure => present,
+            }
+            # Debian/Ubuntu doesn't ship this directory in its package
             file { $pathconf:
-              ensure => directory,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              before => Package[$package_name],
+              ensure  => directory,
+              owner   => 'root',
+              group   => 'opendkim',
+              mode    => '0755',
+              require => Package[$package_name],
             }
             file { "${pathconf}/keys":
-              ensure => directory,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              before => Package[$package_name],
+              ensure  => directory,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0750',
+              require => Package[$package_name],
             }
             file { "${pathconf}/KeyTable":
-              ensure => present,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              before => Package[$package_name],
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0640',
+              require => Package[$package_name],
             }
             file { "${pathconf}/SigningTable":
-              ensure => present,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              before => Package[$package_name],
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0640',
+              require => Package[$package_name],
             }
             file { "${pathconf}/TrustedHosts":
-              ensure => present,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              before => Package[$package_name],
+              ensure  => present,
+              owner   => 'opendkim',
+              group   => 'opendkim',
+              mode    => '0644',
+              require => Package[$package_name],
             }
       }
       default: {}
@@ -96,6 +93,12 @@ class opendkim (
         mode    => '0644',
         content => template('opendkim/opendkim.conf'),
         notify  => Service[$service_name],
+        require => Package[$package_name],
+    }
+
+    service { $service_name:
+        ensure  => running,
+        enable  => true,
         require => Package[$package_name],
     }
 }

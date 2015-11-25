@@ -87,7 +87,10 @@ Puppetlabs are working on automating this section.
 
 ## Limitations
 
-This module is tested on CentOS 6.
+This module is tested on:
+* CentOS 6
+* Ubuntu 12.04
+* Ubuntu 14.04
 
 ## Development
 
