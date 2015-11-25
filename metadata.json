@@ -5,7 +5,7 @@
   "summary": "Configures OpenDKIM",
   "license": "Apache-2.0",
   "source": "https://github.com/bi4o4ek/puppet-opendkim",
-  "project_page": "https://forge.puppetlabs.com/bi4o4ek/opendkim",
+  "project_page": "https://github.com/bi4o4ek/puppet-opendkim",
   "issues_url": "https://github.com/bi4o4ek/puppet-opendkim/issues",
   "operatingsystem_support": [
     {
