@@ -1,6 +1,6 @@
 {
   "name": "bi4o4ek-opendkim",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "author": "Vladimir Bykanov",
   "summary": "Configures OpenDKIM",
   "license": "Apache-2.0",
