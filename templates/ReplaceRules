@@ -1,0 +1,21 @@
+<% if @replace_rules_domain.class == 'Array' -%>
+<% @replace_rules_domain.sort.each do |replace_domain| -%>
+<% @replace_rules_array.sort.each do |replace_rule| -%>
+<% if @masq_entire_domain == true -%>
+@.*\.<%= replace_rule.gsub(/\./, "\\\.") -%>	@<%= replace_domain %>
+<% end -%>
+<% if replace_rule != replace_domain -%>
+@<%= replace_rule.gsub(/\./, "\\\.") -%>	@<%= replace_domain %>
+<% end -%>
+<% end -%>
+<% end -%>
+<% else -%>
+<% @replace_rules_array.sort.each do |replace_rule| -%>
+<% if @masq_entire_domain == true -%>
+@.*\.<%= replace_rule.gsub(/\./, "\\\.") -%>	@<%= @replace_rules_domain %>
+<% end -%>
+<% if replace_rule != @replace_rules_domain -%>
+@<%= replace_rule.gsub(/\./, "\\\.") -%>	@<%= @replace_rules_domain %>
+<% end -%>
+<% end -%>
+<% end -%>
