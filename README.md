@@ -10,6 +10,7 @@
     * [Beginning with opendkim](#beginning-with-opendkim)
     * [Add domains for signing](#add-domains-for-signing)
     * [Add allowed hosts](#add-allowed-hosts)
+    * [Add replace rules](#add-replace-rules)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -32,6 +33,8 @@ This includes the ability to configure and manage a range of different domain, a
 * package/service/configuration files for OpenDKIM
 * signing domains list
 * trusted hosts list
+* replace headers list
+* replace rules list
 
 ### Beginning with opendkim
 
@@ -43,10 +46,18 @@ To install OpenDKIM with the default parameters
 
     opendkim::domain{['example.com', 'example.org']:}
 
-
 ### Add allowed hosts
 
     opendkim::trusted{['10.0.0.0/8', '203.0.113.0/24']:}
+
+### Add replace rules
+
+    # replace_rules_domain should NOT be defined as the title of a resource body
+    # if it's an array (i.e. if you have multiple domains to rewrite)
+    opendkim::replace { 'rewrite-multiple-domains':
+      replace_rules_domain => ['example.com', 'example.org'],
+      replace_rules_array => ['example.net', 'example.biz'],
+    }
 
 ## Usage
 
@@ -76,6 +87,7 @@ This host signs all mails for domains example.com and example.org.
     include opendkim
     opendkim::domain{['example.com', 'example.org']:}
     opendkim::trusted{['10.0.0.0/8', '203.0.113.0/24']:}
+    opendkim::replace {'example.com': replace_rules_array => ['example.net', 'example.biz'],}
 
 After puppet-run you need to copy contents of  /etc/opendkim/keys/example.com/relay-site.txt and paste into corresponding DNS-zone as TXT.
 Then repeat this action for example.org
