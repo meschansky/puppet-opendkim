@@ -1,3 +1,0 @@
-<% @replace_headers_array.sort.each do |replace_header| -%>
-<%= replace_header %>
-<% end -%>
