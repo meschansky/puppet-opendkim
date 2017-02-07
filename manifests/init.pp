@@ -7,6 +7,7 @@
 # === Authors
 #
 # Vladimir Bykanov <vladimir@bykanov.ru>
+# Michael Meschansky https://github.com/meschansky
 #
 # === Copyright
 #
@@ -30,6 +31,7 @@ class opendkim (
   $umask                = '022',
   $userid               = 'opendkim:opendkim',
   $temporary_directory  = '/var/tmp',
+  $default_conf         = '/etc/default/opendkim',
   $package_name         = 'opendkim',
   $service_name         = 'opendkim',
   $pathconf             = '/etc/opendkim',
@@ -43,45 +45,72 @@ class opendkim (
     /^(Debian|Ubuntu)$/ : {
       package { 'opendkim-tools': ensure => present, }
 
+      file {'/var/run/opendkim/':
+          ensure  => directory,
+          owner   => $owner,
+          group   => $group,
+          mode    => '0755',
+          require => Package[$package_name],
+          notify  => Service[$package_name],
+      }
+
       # Debian/Ubuntu doesn't ship this directory in its package
       file { $pathconf:
         ensure  => directory,
         owner   => 'root',
-        group   => 'opendkim',
+        group   => $group,
         mode    => '0755',
         require => Package[$package_name],
+        notify  => Service[$package_name],
       }
 
       file { "${pathconf}/keys":
         ensure  => directory,
-        owner   => 'opendkim',
-        group   => 'opendkim',
+        owner   => $owner,
+        group   => $group,
         mode    => '0750',
         require => Package[$package_name],
+        notify  => Service[$package_name],
       }
 
       file { "${pathconf}/KeyTable":
         ensure  => present,
-        owner   => 'opendkim',
-        group   => 'opendkim',
+        owner   => $owner,
+        group   => $group,
         mode    => '0640',
         require => Package[$package_name],
+        notify  => Service[$package_name],
       }
 
       file { "${pathconf}/SigningTable":
         ensure  => present,
-        owner   => 'opendkim',
-        group   => 'opendkim',
+        owner   => $owner,
+        group   => $group,
         mode    => '0640',
         require => Package[$package_name],
+        notify  => Service[$package_name],
       }
 
       file { "${pathconf}/TrustedHosts":
         ensure  => present,
-        owner   => 'opendkim',
-        group   => 'opendkim',
+        owner   => $owner,
+        group   => $group,
         mode    => '0644',
         require => Package[$package_name],
+        notify  => Service[$package_name],
+      }
+
+      $usergroup = split($userid, ':')
+      # init script included into Debian/Ubuntu package respects user paramter from /etc/default/ only
+      augeas { $default_conf:
+          lens    => 'Shellvars.lns',
+          incl    => $default_conf,
+          context => "/files/${default_conf}",
+          changes => [
+            "set USER ${usergroup[0]}",
+          ],
+          require => Package[$package_name],
+          notify  => Service[$package_name],
       }
     }
     default             : {
