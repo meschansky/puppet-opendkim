@@ -38,7 +38,9 @@ class opendkim (
   $owner                = 'opendkim',
   $group                = 'opendkim',
   $replace_headers      = '/etc/opendkim/ReplaceHeaders',
-  $replace_rules        = '/etc/opendkim/ReplaceRules',) {
+  $replace_rules        = '/etc/opendkim/ReplaceRules',
+  $nameservers          = undef,
+) {
   package { $package_name: ensure => present, }
 
   case $::operatingsystem {
