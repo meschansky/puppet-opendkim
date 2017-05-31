@@ -39,13 +39,12 @@ class opendkim (
   $group                = 'opendkim',
   $replace_headers      = '/etc/opendkim/ReplaceHeaders',
   $replace_rules        = '/etc/opendkim/ReplaceRules',
-  $nameservers          = undef,
-) {
-  package { $package_name: ensure => present, }
+  $nameservers          = undef,) {
+  package { $package_name: ensure => latest, }
 
   case $::operatingsystem {
     /^(Debian|Ubuntu)$/ : {
-      package { 'opendkim-tools': ensure => present, }
+      package { 'opendkim-tools': ensure => latest, }
 
       file {'/var/run/opendkim/':
           ensure  => directory,
